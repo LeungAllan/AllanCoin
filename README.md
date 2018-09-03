@@ -23,3 +23,5 @@ https://ropsten.etherscan.io/address/0x35e4ad9f41879cd0e79a402cbe687ddedfe8d8ac 
   - use it to check blockchain transactions and status.
   
   
+Oh yes, you will need some testing gas to create contract, you can get free ETH (for testnet only) in following link.
+https://faucet.metamask.io/ - click "request 1 ether from metamask" after install metamask in your chrome browser.
