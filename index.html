@@ -18,6 +18,8 @@
 
         <h2 id="instructor"></h2>
 
+	<img id="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif">
+
         <label for="name" class="col-lg-2 control-label">Instructor Name</label>
         <input id="name" type="text">
 
@@ -45,6 +47,23 @@
 
  	var CoursetroContract = web3.eth.contract([
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "age",
+				"type": "uint256"
+			}
+		],
+		"name": "Instructor",
+		"type": "event"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -61,6 +80,12 @@
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	},
 	{
 		"constant": true,
@@ -82,22 +107,41 @@
 	}
 ]);
 
-	var Coursetro = CoursetroContract.at('0xf8b1d9ff904791fdb892e9440ce7b9d95f0de7ce');
+	var Coursetro = CoursetroContract.at('0x31347dc21682a4e3bd04d8a071f060c4d6962a09');
         console.log(Coursetro);
 
+// Replace the Coursetro.getInstructor() lines with this line:
+var instructorEvent = Coursetro.Instructor();
 
-Coursetro.getInstructor(function(error, result){
-            if(!error)
+//Coursetro.getInstructor(function(error, result){
+//            if(!error)
+//                {
+//                    $("#instructor").html(result[0]+' ('+result[1]+' years old)');
+//                    console.log(result);
+//                }
+//            else
+//                console.error(error);
+//        });
+
+	instructorEvent.watch(function(error, result){
+            if (!error)
                 {
-                    $("#instructor").html(result[0]+' ('+result[1]+' years old)');
-                    console.log(result);
+                    $("#loader").hide();
+                    $("#instructor").html(result.args.name + ' (' + result.args.age + ' years old)');
+                } else {
+                    $("#loader").hide();
+                    console.log(error);
                 }
-            else
-                console.error(error);
         });
 
         $("#button").click(function() {
-            Coursetro.setInstructor($("#name").val(), $("#age").val());
+          //  Coursetro.setInstructor($("#name").val(), $("#age").val());
+	Coursetro.setInstructor($("#name").val(), $("#age").val(), (err, res) => {
+	    if (err) {
+        	$("#loader").hide();
+	        console.log('oh no');
+	    }
+	});
         });
 
     </script>
